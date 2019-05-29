@@ -4,6 +4,6 @@ Simply run:
 ```
 $ python getweb.py
 ```
-python3 reqired.
+python3 is required.
 
 
