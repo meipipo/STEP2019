@@ -73,6 +73,15 @@ def runTest():
   print("==== Test started! ====")
   test("1+2")
   test("1.0+2.1-3")
+  test("1")
+  test("0*7")
+  test("1.5*4")
+  test("1.5*10/3")
+  test("5-1.5*10/3")
+  test("2-1.5*10-6/3")
+  test("3-9/0")
+  test("2/0")
+  test("1.4/0.7")
   print("==== Test finished! ====\n")
 
 runTest()
@@ -83,4 +92,3 @@ while True:
   tokens = tokenize(line)
   answer = evaluate(tokens)
   print("answer = %f\n" % answer)
-
