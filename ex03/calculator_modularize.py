@@ -55,7 +55,30 @@ def tokenize(line):
   return tokens
 
 
-def evaluate(tokens):
+def evaluate_MD(tokens):
+  index = 1
+  while index < len(tokens):
+    if tokens[index]['type'] == 'NUMBER':
+      if tokens[index - 1]['type'] == 'MULT':
+        tokens[index - 2]['number'] = tokens[index - 2]['number'] * tokens[index]['number']
+        tokens.pop(index)
+        tokens.pop(index - 1)
+        index -= 1
+      elif tokens[index - 1]['type'] == 'DIV':
+        tokens[index - 2]['number'] = tokens[index - 2]['number'] / tokens[index]['number']
+        tokens.pop(index)
+        tokens.pop(index - 1)
+        index -= 1
+      elif tokens[index - 1]['type'] == 'PLUS' or tokens[index - 1]['type'] == 'MINUS':
+        index += 1
+      else:
+        print('Invalid syntax')
+        exit(1)
+    index += 1
+  return tokens
+
+
+def evaluate_PM(tokens):
   answer = 0
   tokens.insert(0, {'type': 'PLUS'}) # Insert a dummy '+' token
   index = 1
@@ -74,7 +97,8 @@ def evaluate(tokens):
 
 def test(line):
   tokens = tokenize(line)
-  actualAnswer = evaluate(tokens)
+  tokens = evaluate_MD(tokens)
+  actualAnswer = evaluate_PM(tokens)
   expectedAnswer = eval(line)
   if abs(actualAnswer - expectedAnswer) < 1e-8:
     print("PASS! (%s = %f)" % (line, expectedAnswer))
@@ -105,5 +129,6 @@ while True:
   print('> ', end="")
   line = input()
   tokens = tokenize(line)
-  answer = evaluate(tokens)
+  tokens = evaluate_MD(tokens)
+  answer = evaluate_PM(tokens)
   print("answer = %f\n" % answer)
