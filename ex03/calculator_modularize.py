@@ -24,6 +24,16 @@ def readMinus(line, index):
   return token, index + 1
 
 
+def readMult(line, index):
+  token = {'type': 'MULT'}
+  return token, index + 1
+
+
+def readDiv(line, index):
+  token = {'type': 'DIV'}
+  return token, index + 1
+
+
 def tokenize(line):
   tokens = []
   index = 0
@@ -34,6 +44,10 @@ def tokenize(line):
       (token, index) = readPlus(line, index)
     elif line[index] == '-':
       (token, index) = readMinus(line, index)
+    elif line[index] == '*':
+      (token, index) = readMult(line, index)
+    elif line[index] == '/':
+      (token, index) = readDiv(line, index)
     else:
       print('Invalid character found: ' + line[index])
       exit(1)
