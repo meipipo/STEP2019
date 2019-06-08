@@ -2,7 +2,7 @@
 
 Simply run:
 ```
-$ python getweb.py
+$ python decide.py
 ```
 python3 is required.
 

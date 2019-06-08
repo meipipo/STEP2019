@@ -1,5 +1,5 @@
 from selenium import webdriver
-
+import re
 
 driver = webdriver.Chrome("chromedriver")
 driver.get("https://icanhazwordz.appspot.com/dictionary.words")
@@ -15,31 +15,34 @@ dict_sorted_each = list(map(sort_each, dictionary))
 # print(dict_sorted_each[:10])
 
 
-### charの組み合わせを返す関数？
-###
+### charの組み合わせを返す関数
+def next(wordlist, word):
+    for i in range(0, len(word)):
+        newword = word[:i]+word[i+1:]
+        if (len(newword)>12):
+            wordlist.append(newword)
+            next(wordlist, newword)
+    return list(set(wordlist))
 
 
 def find(f, driver):
-    for i in range(0, 10):
-        chars1 = driver.find_elements_by_xpath("//div[@class='letter p1']")
-        chars2 = driver.find_elements_by_xpath("//div[@class='letter p2']")
-        chars3 = driver.find_elements_by_xpath("//div[@class='letter p3']")
-        p1_list = []
-        p2_list = []
-        p3_list = []
-        for c in chars1:
-            p1_list.append(c.text)
-        for c in chars2:
-            p2_list.append(c.text)
-        for c in chars3:
-            p3_list.append(c.text)
-    ## [!] charsは10文字くらいまでのを入れるリストにしたい
-    chars = []
-    chars.append("".join(sorted("".join(sorted(p1_list + p2_list + p3_list)))))
-    # print(chars)
-    for i in range(0, len(chars[0])):
-        chars.append(chars[0][:i]+chars[0][i+1:])
-    print(chars)
+    chars1 = driver.find_elements_by_xpath("//div[@class='letter p1']")
+    chars2 = driver.find_elements_by_xpath("//div[@class='letter p2']")
+    chars3 = driver.find_elements_by_xpath("//div[@class='letter p3']")
+    p1_list = []
+    p2_list = []
+    p3_list = []
+    for c in chars1:
+        p1_list.append(c.text)
+    for c in chars2:
+        p2_list.append(c.text)
+    for c in chars3:
+        p3_list.append(c.text)
+
+    wordlist = []
+    fstchar = "".join(sorted("".join(sorted(p1_list + p2_list + p3_list)).lower()))
+    chars = sorted(next(wordlist, fstchar), key=lambda x:len(x), reverse=True)
+
     if (f < 10):
         ## 10文字くらいまでの候補について、
         for c in chars:
@@ -48,12 +51,14 @@ def find(f, driver):
             if c.lower() in dict_sorted_each:
                 f += 1
                 word = dictionary[dict_sorted_each.index(c.lower())]
+                print(word)
                 ## input to the field
                 elem_search_word = driver.find_element_by_id("MoveField")
                 elem_search_word.send_keys(word)
                 elem_search_btn = driver.find_element_by_xpath("//input[@value='Submit']")
                 elem_search_btn.click()
                 find(f, driver)
+                break
         elem_search_btn = driver.find_element_by_xpath("//input[@value='PASS']")
         elem_search_btn.click()
         find(f, driver)
