@@ -65,10 +65,14 @@ def evaluate_MD(tokens):
         tokens.pop(index - 1)
         index -= 1
       elif tokens[index - 1]['type'] == 'DIV':
-        tokens[index - 2]['number'] = tokens[index - 2]['number'] / tokens[index]['number']
-        tokens.pop(index)
-        tokens.pop(index - 1)
-        index -= 1
+        if tokens[index]['number'] != 0:
+          tokens[index - 2]['number'] = tokens[index - 2]['number'] / tokens[index]['number']
+          tokens.pop(index)
+          tokens.pop(index - 1)
+          index -= 1
+        else:
+          print('Cannot divide by ZERO')
+          exit(1)
       elif tokens[index - 1]['type'] == 'PLUS' or tokens[index - 1]['type'] == 'MINUS':
         index += 1
       else:
@@ -119,6 +123,9 @@ def runTest():
   test("5-1.5*10/3")
   test("2-1.5*10-6/30")
   test("1.4/0.7")
+  # test("3-9/0")
+  # test("2/0")
+  # test("4^5")
   print("==== Test finished! ====\n")
 
 runTest()
