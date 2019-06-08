@@ -132,7 +132,7 @@ runTest()
 
 while True:
   print('> ', end="")
-  line = input()
+  line = input().replace(" ", "")
   tokens = tokenize(line)
   tokens = evaluate_MD(tokens)
   answer = evaluate_PM(tokens)
