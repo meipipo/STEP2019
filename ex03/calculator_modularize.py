@@ -118,8 +118,6 @@ def runTest():
   test("1.5*10/3")
   test("5-1.5*10/3")
   test("2-1.5*10-6/30")
-  test("3-9/0")
-  test("2/0")
   test("1.4/0.7")
   print("==== Test finished! ====\n")
 
