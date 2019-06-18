@@ -1,4 +1,6 @@
 # Graph Analysis
+
+## 1.  SNS data
 ```
 $ python3 analysis.py 1_links.txt 1_nicknames.txt
 ```
@@ -12,4 +14,5 @@ $ python3 analysis.py 1_links.txt 1_nicknames.txt
 > - Shortest path from jacob to andy: ['jacob', 'clayton', 'andy'] , 2 hops
 
 
-![](01_degree_distribution.png)
+### Degree Distribution
+![](1_degree_distribution.png)
